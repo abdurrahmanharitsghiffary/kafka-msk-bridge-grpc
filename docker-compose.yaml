@@ -1,0 +1,11 @@
+services:
+  grpc-client:
+    depends_on:
+      - grpc-server
+    build: 
+      context: .
+      dockerfile: ./deploy/Containerfile.client
+  grpc-server:
+    build: 
+      context: .
+      dockerfile: ./deploy/Containerfile.server

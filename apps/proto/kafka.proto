@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package kafka;
+
+service KafkaService {
+  // Sends a message to a Kafka topic
+  rpc ProduceMessage (ProduceRequest) returns (ProduceResponse);
+  
+  // Streams messages from a Kafka topic
+  rpc ConsumeMessages (ConsumeRequest) returns (stream ConsumeResponse);
+}
+
+// Request to produce a message
+message ProduceRequest {
+  string topic = 1;
+  string key = 2;
+  string value = 3;
+}
+
+// Response after producing a message
+message ProduceResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+// Request to consume messages from a topic
+message ConsumeRequest {
+  string topic = 1;
+  int32 partition = 2;
+  string consumer_group = 3;
+}
+
+// Response containing a consumed message
+message ConsumeResponse {
+  string key = 1;
+  string value = 2;
+  int64 offset = 3;
+}
