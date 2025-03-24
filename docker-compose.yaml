@@ -4,8 +4,8 @@ services:
       - grpc-server
     build: 
       context: .
-      dockerfile: ./deploy/Containerfile.client
+      dockerfile: ./images/Containerfile.client
   grpc-server:
     build: 
       context: .
-      dockerfile: ./deploy/Containerfile.server
+      dockerfile: ./images/Containerfile.server

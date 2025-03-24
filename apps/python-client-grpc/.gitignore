@@ -8,3 +8,8 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Ignore gRPC Python-generated files
+*_pb2.py
+*_pb2.pyi
+*_pb2_grpc.py

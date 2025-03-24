@@ -12,6 +12,10 @@ ADD ./apps/python-client-grpc /app
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen --no-dev
 
+COPY apps/proto proto
+
+RUN uv run python -m grpc_tools.protoc -Iproto --python_out=. --pyi_out=. --grpc_python_out=. proto/kafka.proto
+
 
 FROM python:3.12-slim-bookworm
 

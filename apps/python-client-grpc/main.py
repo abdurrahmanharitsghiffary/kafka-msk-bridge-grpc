@@ -1,5 +1,6 @@
 import grpc
-from protos import kafka_pb2, kafka_pb2_grpc
+import kafka_pb2, kafka_pb2_grpc
+from loguru import logger
 
 def main():
     channel = grpc.insecure_channel('localhost:8085')
@@ -9,7 +10,7 @@ def main():
 
     response = stub.ProduceMessage.future(request)
 
-    print("Response from server:", response.result())
+    logger.info("Response from server:", response.result())
 
 if __name__ == "__main__":
     main()
