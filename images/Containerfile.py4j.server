@@ -1,0 +1,18 @@
+FROM maven:3.9.9-eclipse-temurin-23 AS build
+
+WORKDIR /home/app/java-server-py4j
+
+COPY apps/java-server-py4j/pom.xml /home/app/java-server-py4j
+COPY apps/java-server-py4j/src /home/app/java-server-py4j/src
+
+RUN mvn clean package
+
+FROM eclipse-temurin:23-jre
+WORKDIR /usr/local/lib
+
+COPY --from=build /home/app/java-server-py4j/target/java-server-py4j-1.0-SNAPSHOT.jar app.jar
+
+EXPOSE 25333
+
+ENTRYPOINT ["java", "-cp", "app.jar", "ai.batiinvestasi.app.App"]
+CMD []

@@ -1,9 +1,9 @@
 FROM maven:3.9.9-eclipse-temurin-23 AS build
 
-WORKDIR /home/app/java-msk-grpc
+WORKDIR /home/app/java-server-grpc
 
-COPY apps/java-msk-grpc/pom.xml /home/app/java-msk-grpc
-COPY apps/java-msk-grpc/src /home/app/java-msk-grpc/src
+COPY apps/java-server-grpc/pom.xml /home/app/java-server-grpc
+COPY apps/java-server-grpc/src /home/app/java-server-grpc/src
 COPY apps/proto /home/app/proto
 
 RUN mvn clean compile
@@ -12,7 +12,7 @@ RUN mvn clean package
 FROM eclipse-temurin:23-jre
 WORKDIR /usr/local/lib
 
-COPY --from=build /home/app/java-msk-grpc/target/java-msk-grpc-1.0-SNAPSHOT.jar app.jar
+COPY --from=build /home/app/java-server-grpc/target/java-server-grpc-1.0-SNAPSHOT.jar app.jar
 
 ENTRYPOINT ["java", "-cp", "app.jar", "ai.batiinvestasi.app.App"]
 CMD []

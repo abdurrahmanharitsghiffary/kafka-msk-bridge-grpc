@@ -1,0 +1,13 @@
+services:
+  py4j-client:
+    depends_on:
+      - py4j-server
+    build: 
+      context: .
+      dockerfile: ./images/Containerfile.py4j.client
+  py4j-server:
+    ports:
+      - "25333:25333"
+    build: 
+      context: .
+      dockerfile: ./images/Containerfile.py4j.server

@@ -4,10 +4,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ai.batiinvestasi.app</groupId>
-    <artifactId>java-msk-grpc</artifactId>
+    <artifactId>java-server-grpc</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <name>java-msk-grpc</name>
+    <name>java-server-grpc</name>
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
 
