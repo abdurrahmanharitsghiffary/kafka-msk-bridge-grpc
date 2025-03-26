@@ -11,7 +11,7 @@ def main():
     latencies = []
 
     for i in range(10): 
-        request = kafka_pb2.ProduceRequest(topic="stream-data", key=f"user{i}", value=f"Message {i}")
+        request = kafka_pb2.ProduceRequest(topic="steam-data", key=f"user{i}", value=f"Message {i}")
 
         start_time = time.perf_counter()
         response = stub.ProduceMessage.future(request)
