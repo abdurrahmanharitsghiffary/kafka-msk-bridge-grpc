@@ -14,7 +14,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 COPY apps/proto proto
 
-RUN uv run python -m grpc_tools.protoc -Iproto --python_out=. --pyi_out=. --grpc_python_out=. proto/kafka.proto
+RUN uv run python -m grpc_tools.protoc -Iproto --python_out=/app --pyi_out=/app --grpc_python_out=/app proto/kafka.proto
 
 
 FROM python:3.12-slim-bookworm
@@ -22,5 +22,6 @@ FROM python:3.12-slim-bookworm
 COPY --from=builder --chown=app:app /app /app
 
 ENV PATH="/app/.venv/bin:$PATH"
+ENV PYTHONPATH="/app"
 
 CMD ["python3", "-m", "app.main"]
