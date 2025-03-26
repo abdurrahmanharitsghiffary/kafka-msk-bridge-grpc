@@ -1,11 +1,21 @@
 services:
-  grpc-client:
-    depends_on:
-      - grpc-server
-    build: 
-      context: .
-      dockerfile: ./images/Containerfile.client
   grpc-server:
     build: 
       context: .
       dockerfile: ./images/Containerfile.server
+    ports:
+      - "8085:8085"
+    healthcheck:
+      test: ["CMD", "grpc_health_probe", "-addr=localhost:8085"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 20s
+
+  grpc-client:
+    depends_on:
+      grpc-server:
+        condition: service_healthy
+    build: 
+      context: .
+      dockerfile: ./images/Containerfile.client

@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
+import io.grpc.protobuf.services.HealthStatusManager;
+import io.grpc.protobuf.services.ProtoReflectionService;
 
 public class App {
 
@@ -17,6 +19,8 @@ public class App {
 
             Server server = ServerBuilder
                     .forPort(Config.getServerPort())
+                    .addService(new HealthStatusManager().getHealthService())
+                    .addService(ProtoReflectionService.newInstance())
                     .addService(new KafkaService()).build();
 
             logger.info("🚀 gRPC Server is starting on port " + Config.getServerPort() + "...");
