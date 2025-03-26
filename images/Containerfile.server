@@ -14,5 +14,7 @@ WORKDIR /usr/local/lib
 
 COPY --from=build /home/app/java-server-grpc/target/java-server-grpc-1.0-SNAPSHOT.jar app.jar
 
+EXPOSE 8085
+
 ENTRYPOINT ["java", "-cp", "app.jar", "ai.batiinvestasi.app.App"]
 CMD []

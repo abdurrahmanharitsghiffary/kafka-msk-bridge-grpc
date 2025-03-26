@@ -5,7 +5,7 @@ import time
 import statistics
 
 def main():
-    channel = grpc.insecure_channel('localhost:8085')
+    channel = grpc.insecure_channel('grpc-server:8085')
     stub = kafka_pb2_grpc.KafkaServiceStub(channel)
 
     latencies = []
