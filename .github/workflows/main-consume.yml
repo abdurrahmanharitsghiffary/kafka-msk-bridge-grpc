@@ -1,4 +1,4 @@
-name: Deploy to Multiple EC2 Instances
+name: Deploy to EC2 Instance
 
 on:
   push:
