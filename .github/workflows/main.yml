@@ -1,0 +1,52 @@
+name: Deploy to Multiple EC2 Instances
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  generate-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Generate Matrix from Secrets
+        id: set-matrix
+        run: |
+          # Create a JSON array with your host IPs from secrets.
+          echo "matrix=[\"${{ secrets.SSH_HOST_1 }}\"]" >> $GITHUB_OUTPUT
+
+  deploy:
+    needs: generate-matrix
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        host: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to AWS EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "./"
+          target: "/home/${{ secrets.SSH_USER }}/kafka/kafka-python-java-msk"
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ matrix.host }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            echo "Deploying to ${{ matrix.host }}..."
+            mkdir -p /home/${{ secrets.SSH_USER }}/kafka/kafka-python-java-msk
+            cd /home/${{ secrets.SSH_USER }}/kafka/kafka-python-java-msk
+
+            docker compose -f grpc-server-standalone-compose.yml up -d --build
+
+            echo "Deployment completed on ${{ matrix.host }}"
