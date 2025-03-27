@@ -14,15 +14,15 @@ jobs:
       - name: Generate Matrix from Secrets
         id: set-matrix
         run: |
-          # Create a JSON array with your host IPs from secrets.
-          echo "matrix=[\"${{ secrets.SSH_HOST_1 }}\"]" >> $GITHUB_OUTPUT
+          echo "MATRIX=[\"${{ secrets.SSH_HOST_1 }}\"]" >> $GITHUB_ENV
+        shell: bash
 
   deploy:
     needs: generate-matrix
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        host: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
+        host: ${{ fromJson(env.MATRIX) }}
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
