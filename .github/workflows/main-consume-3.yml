@@ -16,7 +16,7 @@ jobs:
       - name: Deploy to AWS EC2
         uses: appleboy/scp-action@master
         with:
-          host: ${{ secrets.SSH_HOST_1 }}
+          host: ${{ secrets.SSH_HOST_3 }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           source: "./"
@@ -25,14 +25,14 @@ jobs:
       - name: Deploy to EC2
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ secrets.SSH_HOST_1 }}
+          host: ${{ secrets.SSH_HOST_3 }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            echo "Deploying to ${{ secrets.SSH_HOST_1 }}..."
+            echo "Deploying to ${{ matrix.host }}..."
             mkdir -p /home/${{ secrets.SSH_USER }}/kafka/kafka-python-java-msk
             cd /home/${{ secrets.SSH_USER }}/kafka/kafka-python-java-msk
 
             docker compose -f grpc-server-standalone-compose.yml up -d --build
 
-            echo "Deployment completed on ${{ secrets.SSH_HOST_1 }}"
+            echo "Deployment completed on ${{ secrets.SSH_HOST_3 }}"
